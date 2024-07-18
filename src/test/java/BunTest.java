@@ -6,6 +6,8 @@ public class BunTest {
 
     private String bunName = "Bulochka";
     private float bunPrice = 245.454f;
+
+    private static final float DELTA_FOR_ASSERT = 0;
     @Test
     public void getNameTest() {
 
@@ -17,6 +19,6 @@ public class BunTest {
     public void getPriceTest() {
         Bun bun = new Bun(bunName,bunPrice);
         float actualBunPrice = bun.getPrice();
-        Assert.assertEquals(bunPrice,actualBunPrice,0);
+        Assert.assertEquals(bunPrice,actualBunPrice,DELTA_FOR_ASSERT);
     }
 }

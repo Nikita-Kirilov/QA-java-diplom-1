@@ -13,6 +13,7 @@ import praktikum.IngredientType;
 @RunWith(MockitoJUnitRunner.class)
 public class BurgerTest {
 
+    private static final float DELTA_FOR_ASSERT = 0;
     @Mock
     Bun bunMcok = new Bun("Carrot", 50.50f);
 
@@ -28,7 +29,7 @@ public class BurgerTest {
     public void setBunsTest() {
         Burger burger = new Burger();
         burger.setBuns(bunMcok);
-        Assert.assertEquals(burger.bun,bunMcok);
+        Assert.assertEquals(bunMcok,burger.bun);
     }
 
     @Test
@@ -67,17 +68,30 @@ public class BurgerTest {
         burger.ingredients.add(ingredient);
         float priceActual = burger.getPrice();
         float priceExpected = bunMcok.getPrice() * 2 + ingredient.getPrice();
-        Assert.assertEquals(priceExpected,priceActual,0);
+        Assert.assertEquals(priceExpected,priceActual,DELTA_FOR_ASSERT);
     }
 
     @Test
     public void getReceiptTest() {
+        float priceExp = 0.0f;
+        Mockito.when(bunMcok.getName()).thenReturn("Carrot");
+        Mockito.when(ingredient.getName()).thenReturn("Watermelon");
+        Mockito.when(ingredient.getType()).thenReturn(ingredientType.SAUCE);
+
+        StringBuilder receiptExpected = new StringBuilder(String.format("(==== %s ====)%n", bunMcok.getName()));
+        receiptExpected.append(String.format("= %s %s =%n", ingredient.getType().toString().toLowerCase(),
+                ingredient.getName()));
+        receiptExpected.append(String.format("(==== %s ====)%n", bunMcok.getName()));
+        receiptExpected.append(String.format("%nPrice: %f%n", priceExp));
+        String receiptExpectedToString = receiptExpected.toString();
+
         Mockito.when(bunMcok.getName()).thenReturn("Carrot");
         Mockito.when(ingredient.getName()).thenReturn("Watermelon");
         Mockito.when(ingredient.getType()).thenReturn(ingredientType.SAUCE);
         burgerSpy.bun = bunMcok;
         burgerSpy.ingredients.add(ingredient);
-        burgerSpy.getReceipt();
+        String receiptActual= burgerSpy.getReceipt();
+        Assert.assertEquals(receiptExpectedToString,receiptActual);
         Mockito.verify(burgerSpy, Mockito.times(1)).getPrice();
     }
 

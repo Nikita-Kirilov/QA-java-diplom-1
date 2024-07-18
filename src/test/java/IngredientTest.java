@@ -13,6 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class IngredientTest {
 
+    private static final float DELTA_FOR_ASSERT = 0;
     @Mock
     IngredientType ingredientType;
 
@@ -22,7 +23,7 @@ public class IngredientTest {
     public void getIngredientPriceTest() {
         Ingredient ingredient = new Ingredient(ingredientType,ingredientName,ingredientPrice);
         float ingredientPriceActual = ingredient.getPrice();
-        Assert.assertEquals(ingredientPrice,ingredientPriceActual,0);
+        Assert.assertEquals(ingredientPrice,ingredientPriceActual,DELTA_FOR_ASSERT);
     }
 
     @Test
